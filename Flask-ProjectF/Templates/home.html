@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<h1>ProjectF</h1>
+<div class="container" >
+	<div id = "chatbox">
+	    <div class="row">
+	  		<h1>Hi !! I am <I>ProjectF</I></h1>
+	    </div>
+	    <br>
+	    <div class="row">
+	  		<h3><I>What would you like to do?</I></h3>
+	  	</div>
+	    <br>
+	</div>
+  <div class="row" id = 'userInput'>
+    <div class="col">
+      <div class="input-group mb-3">
+        <input id="textInput" type="text" name="msg" class="form-control" placeholder="Query here">
+        <div class="input-group-append">
+          <button id = "buttonInput" class="btn btn-outline-dark" type="button">send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <h5><I> Few Recommendations here....</I></h5>
+  </div>
+  <br>
+
+  <div class="row" id = "BookFacultyBlock">
+  	<div class="col-md-3">
+      <button type="button" id="BookSearch" class="btn btn-outline-dark" onclick="goToBooks()">Search about books</button>
+    </div>
+    <div class="col-md-3">
+      <button type="button" id="FacultySearch" class="btn btn-outline-dark" onclick="goToFaculty()">Know about faculty</button>
+    </div>
+  </div>
+  <br>
+
+  <script type="text/javascript">
+
+    function getBotResponse() {
+      var rawText = $("#textInput").val();
+      var userHtml = '<div class="row"><b>User:: </b>' + rawText + '</div></br>';
+      $("#textInput").val("");
+      $("#chatbox").append(userHtml);
+      document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+      $.get("/get", {msg:rawText }).done(function(data){
+        var botHtml = '<div class="row"><b>Bot:: </b>' + data + '</div></br>';
+        $("#chatbox").append(botHtml);
+        document.getElementById('userInput').scrollIntoView({block : 'start',behaviour:'smooth'});
+        })
+    }
+    $("#textInput").keypress(function(e) {
+        if(e.which == 13) {
+            getBotResponse();
+        }
+    });
+    $("#buttonInput").click(function() {
+    getBotResponse();
+    });
+
+    function goToBooks(){
+      window.location.href = "/books";
+    }
+
+    function goToFaculty(){
+      window.location.href = "/faculty";
+    }
+
+  </script>
+{% endblock content %}

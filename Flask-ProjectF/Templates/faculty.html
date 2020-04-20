@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<h1>ProjectF</h1>
+<div class="container" >
+	<div id = "facultyBox">
+	    <div class="row">
+	  		<h1>Hi !! I am <I>ProjectF</I></h1>
+	    </div>
+	    <br>
+	    <div class="row">
+	  		<h3><I>Know about faculty here...</I></h3>
+	  	</div>
+	    <br>
+	</div>
+	    <div class="row" id = "facultyInput">
+	  		<div class="col">
+	  			<div class="input-group mb-3">
+	  				<input id="facultyTextInput" type="text" name="facultyInfo" class="form-control" placeholder="Enter your query for faculty">
+	  				<div class="input-group-append">
+	  					<button id = "bookButtonInput" class="btn btn-outline-dark" type="button">Enter</button>
+	  				</div>
+  				</div>
+  			</div>
+  		</div>
+		<br>
+	    <div class="col-md-3">
+      		<button type="button" id="facultyToChat" class="btn btn-outline-dark" onclick="goToChat()">Chat with us</button>
+    	</div>
+</div>
+<script type="text/javascript">
+
+	function getFacultyResponse() {
+      var rawFacultyText = $("#facultyTextInput").val();
+      var userFacultyHtml = '<div class="row"><b>Query:: </b>' + rawFacultyText + '</div></br>';
+      $("#facultyTextInput").val("");
+      $("#facultyBox").append(userFacultyHtml);
+      document.getElementById('facultyInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+      $.get("/getFaculty", {facultyInfo:rawFacultyText }).done(function(data){
+        var bookBotHtml = '<div class="row"><b>Details:: </b>' + data + '</div></br>';
+        $("#facultyBox").append(bookBotHtml);
+        document.getElementById('facultyInput').scrollIntoView({block : 'start',behaviour:'smooth'});
+        })
+    }
+    $("#facultyTextInput").keypress(function(e) {
+        if(e.which == 13) {
+            getFacultyResponse();
+        }
+    });
+    $("#bookButtonInput").click(function() {
+    getFacultyResponse();
+    });
+
+
+	function goToChat(){
+      window.location.href = "/chat";
+    }
+</script>
+{% endblock content %}

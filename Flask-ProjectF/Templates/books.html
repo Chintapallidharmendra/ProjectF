@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<h1>ProjectF</h1>
+<div class="container" >
+	<div id = "bookBox">
+	    <div class="row">
+	  		<h1>Hi !! I am <I>ProjectF</I></h1>
+	    </div>
+	    <br>
+	    <div class="row">
+	  		<h3><I>Search book here...</I></h3>
+	  	</div>
+	  	<br>
+	</div>
+	  	<div class="row" id = "bookInput">
+	  		<div class="col">
+	  			<div class="input-group mb-3">
+	  				<input id="bookTextInput" type="text" name="bookInfo" class="form-control" placeholder="Enter Title or Author name">
+	  				<div class="input-group-append">
+	  					<button id = "bookButtonInput" class="btn btn-outline-dark" type="button">Enter</button>
+	  				</div>
+  				</div>
+  			</div>
+  		</div>
+		<br>
+		<div class="col-md-3">
+      		<button type="button" id="bookToChat" class="btn btn-outline-dark" onclick="goToChat()">Chat with us</button>
+    	</div>
+</div>
+<script type="text/javascript">
+
+    function getBookResponse() {
+      var rawBookText = $("#bookTextInput").val();
+      var userBookHtml = '<div class="row"><b>Query:: </b>' + rawBookText + '</div></br>';
+      $("#bookTextInput").val("");
+      $("#bookBox").append(userBookHtml);
+      document.getElementById('bookInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+      $.get("/getBooks", {bookInfo:rawBookText }).done(function(data){
+        var bookBotHtml = '<div class="row"><b>Details:: </b>' + data + '</div></br>';
+        $("#bookBox").append(bookBotHtml);
+        document.getElementById('bookInput').scrollIntoView({block : 'start',behaviour:'smooth'});
+        })
+    }
+    $("#bookTextInput").keypress(function(e) {
+        if(e.which == 13) {
+            getBookResponse();
+        }
+    });
+    $("#bookButtonInput").click(function() {
+    getBookResponse();
+    });
+
+	function goToChat(){
+      window.location.href = "/chat";
+    }
+</script>
+{% endblock content %}

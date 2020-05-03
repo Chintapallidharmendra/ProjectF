@@ -179,7 +179,10 @@ if __name__ == "__main__":
     book_names = excel_lib_dict["book_name"]
     author_names = excel_lib_dict["author_name"]
     subjects = excel_lib_dict["subjects"]
-    
+    faculty_code_names = excel_dict["Code"]
+
+    faculty_names.extend(faculty_code_names)
+
     book_name_questions = ["is _ available in the library?","Is the book _ there?","Any book named _?", "Can you search for the availability of _?"]
     book_author_questions = ["What all are the books written by _?", "Books written by _?", "Books of _?","Which of _'s books are available?",
                              "Can I get any of _'s books?", "Can you search for the availability of book written by _?"]
@@ -203,7 +206,7 @@ if __name__ == "__main__":
     
     add_specific_ques(yml_file_path, book_name_questions, "Book Question", book_names, "books_name")
     add_specific_ques(yml_file_path, book_author_questions, "Book Question", author_names, "books_author")
-    add_specific_ques(yml_file_path, book_number_questions, book_number_answers, book_names, "books_name")
+    add_specific_ques(yml_file_path, book_number_questions, book_number_answers, book_names, "books_number")
     add_book_by_author_ques(yml_file_path, book_by_author_questions, "Book Question", book_names, author_names, "books_name")
     add_specific_ques(yml_file_path, faculty_location_q, faculty_location_a, faculty_names, "faculty_location")
     add_specific_ques(yml_file_path, faculty_teachings_q, faculty_teachings_a, faculty_names, "faculty_teachings")

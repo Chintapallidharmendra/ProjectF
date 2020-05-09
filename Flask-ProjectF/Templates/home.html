@@ -1,74 +1,89 @@
 {% extends "layout.html" %}
 {% block content %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<h1>ProjectF</h1>
-<div class="container" >
-	<div id = "chatbox">
-	    <div class="row">
-	  		<h1>Hi !! I am <I>ProjectF</I></h1>
-	    </div>
-	    <br>
-	    <div class="row">
-	  		<h3><I>What would you like to do?</I></h3>
-	  	</div>
-	    <br>
-	</div>
-  <div class="row" id = 'userInput'>
-    <div class="col">
-      <div class="input-group mb-3">
-        <input id="textInput" type="text" name="msg" class="form-control" placeholder="Query here">
-        <div class="input-group-append">
-          <button id = "buttonInput" class="btn btn-outline-dark" type="button">send</button>
+<div class="row">
+  <div class="col-md-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <h1>ProjectF</h1>
+    <br>
+    <div class="container" >
+    	<div id = "chatbox">
+    	    <div class="row">
+    	  		<h1>Hi !! I am <I>ProjectF</I></h1>
+    	    </div>
+    	    <br>
+    	    <div class="row">
+    	  		<h3><I>What would you like to do?</I></h3>
+    	  	</div>
+    	    <br>
+    	</div>
+      <div class="row" id = 'userInput'>
+        <div class="col">
+          <div class="input-group mb-3">
+            <input id="textInput" type="text" name="msg" class="form-control" placeholder="Query here">
+            <div class="input-group-append">
+              <button id = "buttonInput" class="btn btn-outline-dark" type="button">send</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <br>
-  <div class="row">
-    <h5><I> Few Recommendations here....</I></h5>
-  </div>
-  <br>
+      <br>
+      <div class="row">
+        <h5><I> Few Recommendations here....</I></h5>
+      </div>
+      <br>
 
-  <div class="row" id = "BookFacultyBlock">
-  	<div class="col-md-3">
-      <button type="button" id="BookSearch" class="btn btn-outline-dark" onclick="goToBooks()">Search about books</button>
-    </div>
-    <div class="col-md-3">
-      <button type="button" id="FacultySearch" class="btn btn-outline-dark" onclick="goToFaculty()">Know about faculty</button>
-    </div>
-  </div>
-  <br>
+      <div class="row" id = "BookFacultyBlock">
+      	<div class="col-md-3">
+          <button type="button" id="BookSearch" class="btn btn-outline-dark" onclick="goToBooks()">
+          Search about books  
+          <svg class="bi bi-book-half" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M3.214 1.072C4.813.752 6.916.71 8.354 2.146A.5.5 0 018.5 2.5v11a.5.5 0 01-.854.354c-.843-.844-2.115-1.059-3.47-.92-1.344.14-2.66.617-3.452 1.013A.5.5 0 010 13.5v-11a.5.5 0 01.276-.447L.5 2.5l-.224-.447.002-.001.004-.002.013-.006a5.017 5.017 0 01.22-.103 12.958 12.958 0 012.7-.869zM1 2.82v9.908c.846-.343 1.944-.672 3.074-.788 1.143-.118 2.387-.023 3.426.56V2.718c-1.063-.929-2.631-.956-4.09-.664A11.958 11.958 0 001 2.82z" clip-rule="evenodd"/>
+          <path fill-rule="evenodd" d="M12.786 1.072C11.188.752 9.084.71 7.646 2.146A.5.5 0 007.5 2.5v11a.5.5 0 00.854.354c.843-.844 2.115-1.059 3.47-.92 1.344.14 2.66.617 3.452 1.013A.5.5 0 0016 13.5v-11a.5.5 0 00-.276-.447L15.5 2.5l.224-.447-.002-.001-.004-.002-.013-.006-.047-.023a12.582 12.582 0 00-.799-.34 12.96 12.96 0 00-2.073-.609z" clip-rule="evenodd"/>
+          </svg>
+          </button>
+        </div>
+        <div class="col-md-3">
+          <button type="button" id="FacultySearch" class="btn btn-outline-dark" onclick="goToFaculty()">
+          Know about faculty
+          <svg class="bi bi-people-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 100-6 3 3 0 000 6zm-5.784 6A2.238 2.238 0 015 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 005 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" clip-rule="evenodd"/>
+          </svg>
+          </button>
+        </div>
+      </div>
+      <br>
 
-  <script type="text/javascript">
+      <script type="text/javascript">
 
-    function getBotResponse() {
-      var rawText = $("#textInput").val();
-      var userHtml = '<div class="row"><b>User:: </b>' + rawText + '</div></br>';
-      $("#textInput").val("");
-      $("#chatbox").append(userHtml);
-      document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
-      $.get("/get", {msg:rawText }).done(function(data){
-        var botHtml = '<div class="row"><b>Bot:: </b>' + data + '</div></br>';
-        $("#chatbox").append(botHtml);
-        document.getElementById('userInput').scrollIntoView({block : 'start',behaviour:'smooth'});
-        })
-    }
-    $("#textInput").keypress(function(e) {
-        if(e.which == 13) {
-            getBotResponse();
+        function getBotResponse() {
+          var rawText = $("#textInput").val();
+          var userHtml = '<div class="row"><b>User:: </b>' + rawText + '</div></br>';
+          $("#textInput").val("");
+          $("#chatbox").append(userHtml);
+          document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+          $.get("/get", {msg:rawText }).done(function(data){
+            var botHtml = '<div class="row"><b>Bot:: </b>' + data + '</div></br>';
+            $("#chatbox").append(botHtml);
+            document.getElementById('userInput').scrollIntoView({block : 'start',behaviour:'smooth'});
+            })
         }
-    });
-    $("#buttonInput").click(function() {
-    getBotResponse();
-    });
+        $("#textInput").keypress(function(e) {
+            if(e.which == 13) {
+                getBotResponse();
+            }
+        });
+        $("#buttonInput").click(function() {
+        getBotResponse();
+        });
 
-    function goToBooks(){
-      window.location.href = "/books";
-    }
+        function goToBooks(){
+          window.location.href = "/books";
+        }
 
-    function goToFaculty(){
-      window.location.href = "/faculty";
-    }
-
-  </script>
+        function goToFaculty(){
+          window.location.href = "/faculty";
+        }
+    </script>
+  </div>
+</div>
 {% endblock content %}

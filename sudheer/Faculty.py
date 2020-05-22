@@ -54,4 +54,4 @@ class Faculty_Data:
                 else:
                     return 'no'
         else:
-            return ('glove model')
+            return 'Tell  me more!'

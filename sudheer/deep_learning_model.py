@@ -70,7 +70,7 @@ class fbot:
         self.get_input_and_output_vectors()
     def model_training(self):
         self.model = Sequential()
-        self.model.add(Dense(self.X_train.shape[1], activation='relu', input_dim=self.X_train.shape[1]))
+        self.model.add(Dense(256, activation='relu', input_dim=self.X_train.shape[1]))
         self.model.add(Dense(128, activation='relu'))
         self.model.add(Dense(len(self.classes),activation='softmax'))
         self.model.compile(optimizer='rmsprop',loss='categorical_crossentropy',metrics=['accuracy'])

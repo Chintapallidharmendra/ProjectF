@@ -31,7 +31,7 @@ class fbot:
         self.library_general_bot=library_bot(0.5)
         abbrevations_df=pd.read_excel('Abbrevations.xlsx',header=None,index_col=0)
         self.abbrevations=abbrevations_df.to_dict()[1]
-        self.rem_sirs=['sir','maam',"sir's",'madam',"ma'am","ma'am's",'bsirs',"bmaam's","madam's",'madams','maams',"ma'ams"]
+        self.rem_sirs=["sir's",'madam',"ma'am","ma'am's",'sirs',"maam's","madam's",'madams','maams',"ma'ams",'sir','maam']
     def get_intents(self):
         with open('./training_file.json') as json_file:
             self.intents=json.load(json_file)

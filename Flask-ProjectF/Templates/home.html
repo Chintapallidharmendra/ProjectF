@@ -62,7 +62,9 @@
           $("#chatbox").append(userHtml);
           document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
           $.get("/get", {msg:rawText }).done(function(data){
-            var botHtml = '<div class="row"><b>Bot:: </b>' + data + '</div></br>';
+            var comment = data;
+            comment = comment.replace(/\n/g, "");
+            var botHtml = '<div class="row"><b>Bot:: </b>' + comment + '</div></br>';
             $("#chatbox").append(botHtml);
             document.getElementById('userInput').scrollIntoView({block : 'start',behaviour:'smooth'});
             })

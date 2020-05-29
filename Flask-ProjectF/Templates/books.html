@@ -18,12 +18,13 @@
     	</div>
     	  	<div class="row" id = "bookInput">
     	  		<div class="col">
-    	  			<div class="input-group mb-3">
-    	  				<input id="bookTextInput" type="text" name="bookInfo" class="form-control" placeholder="Enter Title or Author name">
-    	  				<div class="input-group-append">
-    	  					<button id = "bookButtonInput" class="btn btn-outline-dark" type="button">Enter</button>
-    	  				</div>
-      				</div>
+                <input class="form-control form-control-md" id = "bookAuthorInput" name = "AuthorInput" type="text" placeholder="Enter Author Name">
+                <br>
+                <p align = "center"><I>and/or</I></p>
+                <input class="form-control form-control-md" id = "bookTitleInput" name = "TitleInput" type="text" placeholder="Enter Title Name">
+                <br>
+                <button type="button" class="btn btn-outline-dark" id = "bookButtonInput">Search</button>
+      			</div>
       			</div>
       		</div>
     		<br>
@@ -34,23 +35,32 @@
                 <path d="M5 8a1 1 0 11-2 0 1 1 0 012 0zm4 0a1 1 0 11-2 0 1 1 0 012 0zm4 0a1 1 0 11-2 0 1 1 0 012 0z"/>
               </svg>
               </button>
-        	</div>
+        </div>
     </div>
     <script type="text/javascript">
 
         function getBookResponse() {
-          var rawBookText = $("#bookTextInput").val();
-          var userBookHtml = '<div class="row"><b>Query:: </b>' + rawBookText + '</div></br>';
-          $("#bookTextInput").val("");
+          var rawBookAuthorText = $("#bookAuthorInput").val();
+          var rawBookTitleText = $("#bookTitleInput").val();
+          var userBookHtml = '<div class="row"><b>User Input:: </b> { ' + rawBookAuthorText +' , '+rawBookTitleText + ' } </div></br>';
+          $("#bookAuthorInput").val("");
+          $("#bookTitleInput").val("");
           $("#bookBox").append(userBookHtml);
           document.getElementById('bookInput').scrollIntoView({block: 'start', behavior: 'smooth'});
-          $.get("/getBooks", {bookInfo:rawBookText }).done(function(data){
-            var bookBotHtml = '<div class="row"><b>Details:: </b>' + data + '</div></br>';
-            $("#bookBox").append(bookBotHtml);
+          $.get("/getBooks", {AuthorInput:rawBookAuthorText,TitleInput:rawBookTitleText}).done(function(data){
+            var comment = data;
+            comment = comment.replace(/\n/g, "");
+            var facultyBotHtml = '<div class="row">'+ comment + '</div></br>';
+            $("#bookBox").append(facultyBotHtml);
             document.getElementById('bookInput').scrollIntoView({block : 'start',behaviour:'smooth'});
             })
         }
-        $("#bookTextInput").keypress(function(e) {
+        $("#bookAuthorInput").keypress(function(e) {
+            if(e.which == 13) {
+                getBookResponse();
+            }
+        });
+        $("#bookTitleInput").keypress(function(e) {
             if(e.which == 13) {
                 getBookResponse();
             }

@@ -45,7 +45,9 @@
           $("#facultyBox").append(userFacultyHtml);
           document.getElementById('facultyInput').scrollIntoView({block: 'start', behavior: 'smooth'});
           $.get("/getFaculty", {facultyInfo:rawFacultyText }).done(function(data){
-            var bookBotHtml = '<div class="row"><b>Details:: </b>' + data + '</div></br>';
+            var comment = data;
+            comment = comment.replace(/\n/g, "");
+            var bookBotHtml = '<div class="row">'+ comment + '</div></br>';
             $("#facultyBox").append(bookBotHtml);
             document.getElementById('facultyInput').scrollIntoView({block : 'start',behaviour:'smooth'});
             })

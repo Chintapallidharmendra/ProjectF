@@ -10,6 +10,12 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from loginForm import LoginForm ,updatePassword
 
+import sys
+sys.path.append(r'../Model')
+from deep_learning_model import fbot
+from faculty_direct import search_direct as search_direct_faculty
+from search_books import search_direct as search_direct_books
+
 
 info = [
 {'name':'Dharmendra','roll':'U16EC058'},
@@ -20,7 +26,7 @@ info = [
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
-app.config['UPLOAD_FOLDER'] = "C:/Users/Dharmendra/Desktop/ProjectF-Local/Flask-ProjectF/Data"
+app.config['UPLOAD_FOLDER'] = r"C:\Users\Dharmendra\Desktop\ProjectF\Model"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///credentials.db'
 db = SQLAlchemy(app)
 
@@ -29,37 +35,57 @@ class LoginCredentials(db.Model):
   pasword = db.Column(db.String(20), nullable = False)
   id = db.Column(db.Integer, nullable = False,unique = True)
 
+os.chdir(r'../Model')
+bot = fbot()
+bot.start()
+
+sdf = search_direct_faculty()
+sdb = search_direct_books()
+
+os.chdir(r'../Flask-ProjectF')
+
 @app.route("/")
 @app.route("/home")
 def home():
-	return render_template("home.html")
+    return render_template("home.html")
 
 @app.route("/about")
 def about():
-	return render_template("about.html",info_dict =info,title = 'About')
+    return render_template("about.html",info_dict =info,title = 'About')
 
 @app.route("/books")
 def books():
-	return render_template("books.html",title = 'Books')
+    return render_template("books.html",title = 'Books')
 
 @app.route("/faculty")
 def faculty():
-	return render_template("faculty.html",title = 'Faculty')
+    return render_template("faculty.html",title = 'Faculty')
 
-@app.route("/get")
+@app.route("/get",methods = ['GET','POST'])
 def get_bot_response():
-     userText = request.args.get("msg") 
-     return 'Sorry! Model not yet linked!'
+    userText = request.args.get("msg")
+    os.chdir(r'../Model')
+    output = bot.get_bot_result(userText)
+    os.chdir(r'../Flask-ProjectF')
+    return output
 
-@app.route("/getBooks")
+@app.route("/getBooks",methods = ['GET','POST'])
 def get_book_response():
-     userBookText = request.args.get("bookInfo")
-     return 'Sorry! Book Model not yet linked!'
+    userAuthorText = request.args.get("AuthorInput")
+    userTitleText = request.args.get("TitleInput")
+    os.chdir(r'../Model')
+    output_books = sdb.search(userTitleText,userAuthorText)
+    #print(sd.search('analog integrated circuits','Sergio'))
+    os.chdir(r'../Flask-ProjectF')
+    return  output_books
 
-@app.route("/getFaculty")
+@app.route("/getFaculty",methods = ['GET','POST'])
 def get_faculty_response():
-     userBookText = request.args.get("facultyInfo")
-     return 'Sorry! Faculty Model not yet linked!'
+    userFacultyText = request.args.get("facultyInfo")
+    os.chdir(r'../Model')
+    output_Faculty = sdf.search(userFacultyText)
+    os.chdir(r'../Flask-ProjectF')    
+    return output_Faculty
 
 @app.route("/login",methods = ['POST','GET'])
 def login():
@@ -100,7 +126,7 @@ def admin():
         conn.commit()
         conn.close()
         flash("Password Reset succesful!!")
-        return redirect(url_for('login'))
+        return redirect(url_for('login', message = "Password Reset succesful!!"))
       else:
         conn.close()
         flash("Password Reset Unsuccesful !!")
@@ -114,7 +140,7 @@ def admin():
 def success():
   if request.method == 'POST':
     file = request.files['file']
-    if file and file.filename in ['BookData.xlsx','FacultyData.xlsx']:
+    if file and file.filename in ['ProcessedLib.xlsx','faculties.xlsx']:
       filename = secure_filename(file.filename)
       file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
       flash("uploaded succesfully !!")
@@ -128,4 +154,4 @@ def success():
 
 
 if __name__ == '__main__':
-	app.run(debug = True)
+    app.run(debug = True)

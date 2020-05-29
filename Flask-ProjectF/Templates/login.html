@@ -1,5 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+{% if message %}
+<script>
+  var msg = {{ message}};
+    alert(msg);
+</script>
+{% endif %}
 <div class="row">
     <div class="col-md-8">
         <h1>LoginPage</h1>
